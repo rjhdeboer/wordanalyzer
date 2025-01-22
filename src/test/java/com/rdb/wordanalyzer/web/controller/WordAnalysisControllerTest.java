@@ -7,6 +7,7 @@ import com.rdb.wordanalyzer.service.WordFrequencyAnalyzer;
 import com.rdb.wordanalyzer.web.request.FrequencyForWordRequest;
 import com.rdb.wordanalyzer.web.request.HighestFrequencyRequest;
 import com.rdb.wordanalyzer.web.request.MostFrequentNWordsRequest;
+import com.rdb.wordanalyzer.web.response.MostFrequentWordsResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ class WordAnalysisControllerTest {
                 .content(objectMapper.writeValueAsString(new HighestFrequencyRequest(text))))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$").value(highestFrequency));
+                .andExpect(jsonPath("$.frequency").value(highestFrequency));
     }
 
     @Test
@@ -66,7 +67,7 @@ class WordAnalysisControllerTest {
                 .content(objectMapper.writeValueAsString(new FrequencyForWordRequest(text, "sentence"))))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$").value(frequency));
+                .andExpect(jsonPath("$.frequency").value(frequency));
     }
 
     @Test
@@ -94,6 +95,7 @@ class WordAnalysisControllerTest {
                 new SimpleWordFrequency("is", 1),
                 new SimpleWordFrequency("repeated", 1)
         );
+        MostFrequentWordsResponse expectedResponse = new MostFrequentWordsResponse(wordFrequencies);
 
         given(wordFrequencyAnalyzer.calculateMostFrequentNWords(text, limit)).willReturn(wordFrequencies);
 
@@ -102,7 +104,7 @@ class WordAnalysisControllerTest {
                 .content(objectMapper.writeValueAsString(new MostFrequentNWordsRequest(text, limit))))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(objectMapper.writeValueAsString(wordFrequencies)));
+                .andExpect(content().json(objectMapper.writeValueAsString(expectedResponse)));
     }
 
     @Test

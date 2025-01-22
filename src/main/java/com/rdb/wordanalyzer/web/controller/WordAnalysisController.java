@@ -5,6 +5,8 @@ import com.rdb.wordanalyzer.service.WordFrequencyAnalyzer;
 import com.rdb.wordanalyzer.web.request.FrequencyForWordRequest;
 import com.rdb.wordanalyzer.web.request.HighestFrequencyRequest;
 import com.rdb.wordanalyzer.web.request.MostFrequentNWordsRequest;
+import com.rdb.wordanalyzer.web.response.FrequencyResponse;
+import com.rdb.wordanalyzer.web.response.MostFrequentWordsResponse;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,17 +26,20 @@ public class WordAnalysisController {
     }
 
     @PostMapping("/highest")
-    public int calculateHighestFrequency(@RequestBody @Valid HighestFrequencyRequest request) {
-        return wordFrequencyAnalyzer.calculateHighestFrequency(request.getText());
+    public FrequencyResponse calculateHighestFrequency(@RequestBody @Valid HighestFrequencyRequest request) {
+        int highestFrequency = wordFrequencyAnalyzer.calculateHighestFrequency(request.getText());
+        return new FrequencyResponse(highestFrequency);
     }
 
     @PostMapping("/word")
-    public int calculateFrequencyForWord(@RequestBody @Valid FrequencyForWordRequest request) {
-        return wordFrequencyAnalyzer.calculateFrequencyForWord(request.getText(), request.getWord());
+    public FrequencyResponse calculateFrequencyForWord(@RequestBody @Valid FrequencyForWordRequest request) {
+        int frequencyForWord = wordFrequencyAnalyzer.calculateFrequencyForWord(request.getText(), request.getWord());
+        return new FrequencyResponse(frequencyForWord);
     }
 
     @PostMapping("/most")
-    public List<WordFrequency> calculateMostFrequentNWords(@RequestBody @Valid MostFrequentNWordsRequest request) {
-        return wordFrequencyAnalyzer.calculateMostFrequentNWords(request.getText(), request.getLimit());
+    public MostFrequentWordsResponse calculateMostFrequentNWords(@RequestBody @Valid MostFrequentNWordsRequest request) {
+        List<WordFrequency> wordFrequencies = wordFrequencyAnalyzer.calculateMostFrequentNWords(request.getText(), request.getLimit());
+        return new MostFrequentWordsResponse(wordFrequencies);
     }
 }

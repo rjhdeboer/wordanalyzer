@@ -7,6 +7,7 @@ import com.rdb.wordanalyzer.domain.WordFrequency;
 import com.rdb.wordanalyzer.web.request.FrequencyForWordRequest;
 import com.rdb.wordanalyzer.web.request.HighestFrequencyRequest;
 import com.rdb.wordanalyzer.web.request.MostFrequentNWordsRequest;
+import com.rdb.wordanalyzer.web.response.MostFrequentWordsResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ class WordAnalysisControllerIntegrationTest {
                 .content(objectMapper.writeValueAsString(new HighestFrequencyRequest("This is a sentence"))))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$").value(1));
+                .andExpect(jsonPath("$.frequency").value(1));
     }
 
     @Test
@@ -48,7 +49,7 @@ class WordAnalysisControllerIntegrationTest {
                 .content(objectMapper.writeValueAsString(new FrequencyForWordRequest("This is a sentence with a repeated word", "sentence"))))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$").value(1));
+                .andExpect(jsonPath("$.frequency").value(1));
     }
 
     @Test
@@ -58,12 +59,13 @@ class WordAnalysisControllerIntegrationTest {
                 new SimpleWordFrequency("is", 1),
                 new SimpleWordFrequency("repeated", 1)
         );
+        MostFrequentWordsResponse expectedResponse = new MostFrequentWordsResponse(wordFrequencies);
 
         mockMvc.perform(post("/frequencies/most")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(new MostFrequentNWordsRequest("This is a sentence with a repeated word", 3))))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(objectMapper.writeValueAsString(wordFrequencies)));
+                .andExpect(content().json(objectMapper.writeValueAsString(expectedResponse)));
     }
 }
