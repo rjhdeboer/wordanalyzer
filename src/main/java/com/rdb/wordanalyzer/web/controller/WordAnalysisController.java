@@ -27,19 +27,19 @@ public class WordAnalysisController {
 
     @PostMapping("/highest")
     public FrequencyResponse calculateHighestFrequency(@RequestBody @Valid HighestFrequencyRequest request) {
-        int highestFrequency = wordFrequencyAnalyzer.calculateHighestFrequency(request.getText());
+        int highestFrequency = wordFrequencyAnalyzer.calculateHighestFrequency(request.text());
         return new FrequencyResponse(highestFrequency);
     }
 
     @PostMapping("/word")
     public FrequencyResponse calculateFrequencyForWord(@RequestBody @Valid FrequencyForWordRequest request) {
-        int frequencyForWord = wordFrequencyAnalyzer.calculateFrequencyForWord(request.getText(), request.getWord());
+        int frequencyForWord = wordFrequencyAnalyzer.calculateFrequencyForWord(request.text(), request.word());
         return new FrequencyResponse(frequencyForWord);
     }
 
     @PostMapping("/most")
     public MostFrequentWordsResponse calculateMostFrequentNWords(@RequestBody @Valid MostFrequentNWordsRequest request) {
-        List<WordFrequency> wordFrequencies = wordFrequencyAnalyzer.calculateMostFrequentNWords(request.getText(), request.getLimit());
+        List<WordFrequency> wordFrequencies = wordFrequencyAnalyzer.calculateMostFrequentNWords(request.text(), request.limit());
         return new MostFrequentWordsResponse(wordFrequencies);
     }
 }

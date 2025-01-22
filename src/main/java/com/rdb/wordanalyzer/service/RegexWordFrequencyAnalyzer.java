@@ -12,12 +12,17 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Implementation of a {@code WordFrequencyAnalyzer} that uses a regular expression to count word frequencies in a text.
+ *
+ * Note that this implementation assumes there is enough available memory and should not be uses in a case where the given texts are extremely large or it is used in a highly
+ * concurrent manner.
+ */
 @Service
 public class RegexWordFrequencyAnalyzer implements WordFrequencyAnalyzer {
 
     private static final Pattern WORD_PATTERN = Pattern.compile("[a-zA-Z]+");
 
-    @Override
     public int calculateHighestFrequency(String text) {
         Assert.hasText(text, "Text should not be null or empty");
 
@@ -27,7 +32,6 @@ public class RegexWordFrequencyAnalyzer implements WordFrequencyAnalyzer {
                 .orElse(0);
     }
 
-    @Override
     public int calculateFrequencyForWord(String text, String word) {
         Assert.hasText(text, "Text should not be null or empty");
         Assert.hasText(word, "Word should not be null or empty");
@@ -37,7 +41,6 @@ public class RegexWordFrequencyAnalyzer implements WordFrequencyAnalyzer {
         return wordCounts.getOrDefault(word.toLowerCase(), 0);
     }
 
-    @Override
     public List<WordFrequency> calculateMostFrequentNWords(String text, int n) {
         Assert.hasText(text, "Text should not be null or empty");
         Assert.isTrue(n > 0, "Number should be higher than zero");

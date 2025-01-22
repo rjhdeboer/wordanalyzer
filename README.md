@@ -7,6 +7,8 @@ It contains the following 3 functionalities:
 - Calculate the frequency of a given word in a given text
 - Calculate the most frequent 'n' words in a given text
 
+The definition of a 'word' in this context is: a sequence of 1 or more characters (a-z A-Z).
+
 ### Prerequisites
 - A (somewhat) recent version of Apache Maven
 - JDK version 23
