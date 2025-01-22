@@ -3,9 +3,9 @@
 This is a small project that contains a word analyzer service exposed through a REST API.
 
 It contains the following 3 functionalities: 
-- Calculate the highest frequency of a word in a given text
+- Calculate the highest frequency of any word in a given text
 - Calculate the frequency of a given word in a given text
-- Calculate the most frequent 'n' words in a given text
+- Calculate the most frequent _n_ number of words in a given text
 
 The definition of a 'word' in this context is: a sequence of 1 or more characters (a-z A-Z).
 
